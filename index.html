@@ -1,0 +1,1076 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>10th Grade English — Language & Communication | Class Portal</title>
+    <!-- Load Tailwind CSS for responsive, modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Load Inter Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Smooth tab transitions */
+        .tab-panel {
+            animation: fadeIn 0.25s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        /* Custom subtle scrollbar for tables */
+        ::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 9999px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 min-h-screen flex flex-col selection:bg-indigo-100 selection:text-indigo-900">
+
+    <!-- Toast Notification Container (Replaces alert()) -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- Course Banner Header -->
+    <header class="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 text-white shadow-lg">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+            <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                <div>
+                    <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-indigo-500/20 border border-indigo-400/30 text-indigo-200 text-xs font-medium mb-3">
+                        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                        10th Grade English • Mon / Wed / Fri • Period 2 (09:00–09:45) • Room 204
+                    </div>
+                    <h1 class="text-2xl sm:text-3xl font-bold tracking-tight text-white">
+                        10th Grade English — Language & Communication
+                    </h1>
+                    <p class="text-slate-300 text-sm sm:text-base mt-1">
+                        Interactive Class Portal • Teacher: <span class="font-semibold text-white">B.Khongorzul</span>
+                    </p>
+                </div>
+
+                <!-- Quick Summary Stats & Reset Control -->
+                <div class="flex flex-wrap items-center gap-2.5 self-start md:self-center">
+                    <!-- Teacher vs. Student View Toggle -->
+                    <div class="inline-flex items-center p-1 rounded-xl bg-white/10 border border-white/15" role="group" aria-label="View Mode Toggle">
+                        <button id="view-btn-teacher" onclick="setViewMode('teacher')" class="px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-emerald-500 text-slate-950 shadow-xs">
+                            Teacher View
+                        </button>
+                        <button id="view-btn-student" onclick="setViewMode('student')" class="px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer text-slate-200 hover:text-white">
+                            Student View
+                        </button>
+                    </div>
+                    <div class="px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-xs">
+                        <span class="text-slate-300">Roster:</span>
+                        <strong id="header-roster-count" class="text-white ml-1">6</strong>
+                    </div>
+                    <div id="header-avg-pill" class="px-3 py-2 rounded-xl bg-white/10 border border-white/15 text-xs">
+                        <span class="text-slate-300">Class Avg:</span>
+                        <strong id="header-class-avg" class="text-emerald-300 ml-1">0%</strong>
+                    </div>
+                    <button id="btn-reset-demo" onclick="resetDemoData()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-slate-200 text-xs font-medium border border-white/15 transition cursor-pointer" title="Restore original 10th-grade English sample data">
+                        Reset Demo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Active View Mode Indicator Strip -->
+            <div class="mt-4 flex flex-wrap items-center justify-between gap-2 text-xs bg-white/5 border border-white/10 rounded-xl px-3.5 py-2">
+                <div class="flex items-center gap-2">
+                    <span id="active-view-dot" class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                    <span class="text-slate-300">Active View:</span>
+                    <strong id="active-view-label" class="text-white">Teacher View</strong>
+                </div>
+                <span id="active-view-desc" class="text-slate-300">
+                    Full access to Assignments, Attendance Check-In &amp; Student Marks.
+                </span>
+            </div>
+
+            <!-- Main Navigation Tabs -->
+            <nav class="mt-5 flex flex-wrap gap-2 border-t border-white/10 pt-5" aria-label="Portal Tabs">
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ========================================================= -->
+        <!-- TAB 1: ASSIGNMENTS                                        -->
+        <!-- ========================================================= -->
+        <section id="panel-assignments" class="tab-panel space-y-6">
+            <!-- Top Action Bar -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">10th Grade English Assignments</h2>
+                    <p class="text-sm text-slate-500">Reading, writing, speaking &amp; grammar tasks led by B.Khongorzul.</p>
+                </div>
+                <button onclick="toggleNewAssignmentForm()" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold shadow-sm transition cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                    Student Marks
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="flex-1 max-w-6xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ========================================================= -->
+        <!-- TAB 1: ASSIGNMENTS                                        -->
+        <!-- ========================================================= -->
+        <section id="panel-assignments" class="tab-panel space-y-6">
+            <!-- Top Action Bar -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">10th Grade English Assignments</h2>
+                    <p id="assignments-subtitle" class="text-sm text-slate-500">Reading, writing, speaking &amp; grammar tasks led by B.Khongorzul.</p>
+                </div>
+                <button id="btn-add-assignment" onclick="toggleNewAssignmentForm()" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold shadow-sm transition cursor-pointer">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+                    </svg>
+                    Add New Assignment
+                </button>
+            </div>
+
+            <!-- Collapsible Add New Assignment Form -->
+            <div id="new-assignment-drawer" class="hidden bg-white p-6 rounded-2xl border-2 border-indigo-100 shadow-md">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-base font-bold text-slate-900">Post New Assignment</h3>
+                    <button onclick="toggleNewAssignmentForm()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <form onsubmit="handleAddAssignment(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Assignment Title *</label>
+                        <input type="text" id="assign-title" required placeholder="e.g., Speaking & Listening: Restaurant Roleplay / Eating Out" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
+                    </div>
+                    <div class="grid grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Due Date *</label>
+                            <input type="date" id="assign-due" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Points *</label>
+                            <input type="number" id="assign-points" min="1" max="500" value="30" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Status</label>
+                            <select id="assign-status" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="Open">Open</option>
+                                <option value="Upcoming">Upcoming</option>
+                                <option value="Closed">Closed</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Short Summary *</label>
+                        <input type="text" id="assign-summary" required placeholder="Brief overview visible on the assignment card..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="md:col-span-2">
+                        <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Detailed Instructions & Rubric *</label>
+                        <textarea id="assign-instructions" rows="3" required placeholder="Include formatting guidelines, word count, and grading criteria..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                    </div>
+                    <div class="md:col-span-2 flex justify-end gap-2 pt-2">
+                        <button type="button" onclick="toggleNewAssignmentForm()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50 cursor-pointer">Cancel</button>
+                        <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold shadow-sm cursor-pointer">Publish Assignment</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Assignments Cards List -->
+            <div id="assignments-list" class="space-y-4">
+                <!-- Populated dynamically via JS -->
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 2: ATTENDANCE CHECK-IN                                -->
+        <!-- ========================================================= -->
+        <section id="panel-attendance" class="tab-panel hidden space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                <!-- Left Column: Student Check-In Form -->
+                <div class="lg:col-span-5">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200/80 shadow-sm sticky top-6">
+                        <div class="flex items-center gap-3 mb-4">
+                            <div class="w-10 h-10 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-900">10th Grade Attendance Check-In</h2>
+                                <p class="text-xs text-slate-500" id="current-date-label">Session Date</p>
+                            </div>
+                        </div>
+
+                        <form onsubmit="handleCheckIn(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Student Full Name *</label>
+                                <input type="text" id="checkin-name" required placeholder="e.g., Bat-Erdene Dorj" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Student ID *</label>
+                                <input type="text" id="checkin-id" required placeholder="e.g., G10-017" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Attendance Status</label>
+                                <select id="checkin-status" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="Present">Present (On Time)</option>
+                                    <option value="Late">Late Arrival</option>
+                                    <option value="Excused">Excused Absence</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1.5">Optional Note</label>
+                                <input type="text" id="checkin-note" placeholder="e.g., Bus delay, dentist pass, ready for roleplay..." class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+
+                            <button type="submit" class="w-full py-3 px-4 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm shadow-sm transition flex items-center justify-center gap-2 cursor-pointer">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                                </svg>
+                                Check In Now
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Right Column: Live Summary & Attendance Log -->
+                <div id="attendance-right-column" class="lg:col-span-7 space-y-5">
+                    <!-- Summary Counters -->
+                    <div class="grid grid-cols-3 gap-3 sm:gap-4">
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+                            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Present</p>
+                            <p id="stat-present" class="text-2xl font-bold text-emerald-600 mt-1">0</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+                            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Late</p>
+                            <p id="stat-late" class="text-2xl font-bold text-amber-600 mt-1">0</p>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
+                            <p class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Total Logged</p>
+                            <p id="stat-total" class="text-2xl font-bold text-indigo-600 mt-1">0</p>
+                        </div>
+                    </div>
+
+                    <!-- Live Attendance Log Table -->
+                    <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                        <div class="p-5 border-b border-slate-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                            <div>
+                                <h3 class="text-base font-bold text-slate-900">Live Attendance Log</h3>
+                                <p class="text-xs text-slate-500">Updates automatically upon student submission</p>
+                            </div>
+                            <button id="btn-copy-attendance" onclick="copyAttendanceLog()" class="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-semibold transition cursor-pointer self-start sm:self-center">
+                                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/>
+                                </svg>
+                                Copy / Export Log
+                            </button>
+                        </div>
+
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-50/80 border-b border-slate-200/80 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                        <th class="py-3 px-4">Student</th>
+                                        <th class="py-3 px-4">ID</th>
+                                        <th class="py-3 px-4">Status</th>
+                                        <th class="py-3 px-4">Note</th>
+                                        <th class="py-3 px-4">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="attendance-table-body" class="divide-y divide-slate-100 text-sm">
+                                    <!-- Populated dynamically via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- TAB 3: STUDENT MARKS / GRADEBOOK                          -->
+        <!-- ========================================================= -->
+        <section id="panel-marks" class="tab-panel hidden space-y-6">
+            <!-- Gradebook Header & Controls -->
+            <div class="bg-white p-5 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                <div>
+                    <h2 class="text-lg font-bold text-slate-900">10th Grade English Gradebook &amp; Marks</h2>
+                    <p class="text-sm text-slate-500">Scores out of 100 per task • Weights: Essay (30%), Quiz (20%), Roleplay (25%), Grammar (25%).</p>
+                </div>
+
+                <div class="flex flex-wrap items-center gap-3">
+                    <!-- Search Filter -->
+                    <div class="relative flex-1 sm:flex-initial">
+                        <svg class="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <input type="text" id="marks-search" oninput="renderMarksTable()" placeholder="Search name or ID..." class="w-full sm:w-56 pl-9 pr-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+
+                    <!-- Edit Marks Toggle -->
+                    <button id="btn-toggle-edit" onclick="toggleEditMarks()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl border border-indigo-200 bg-indigo-50 text-indigo-700 hover:bg-indigo-100 text-sm font-semibold transition cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/>
+                        </svg>
+                        <span id="edit-mode-label">Edit Marks: ON</span>
+                    </button>
+
+                    <!-- Add Student Button -->
+                    <button onclick="toggleAddStudentRow()" class="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold shadow-sm transition cursor-pointer">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z"/>
+                        </svg>
+                        Add Student
+                    </button>
+                </div>
+            </div>
+
+            <!-- Collapsible Add Student Form -->
+            <div id="add-student-drawer" class="hidden bg-white p-5 rounded-2xl border-2 border-indigo-100 shadow-md">
+                <form onsubmit="handleAddStudent(event)" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-8 gap-3 items-end">
+                    <div class="lg:col-span-2">
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Student Name *</label>
+                        <input type="text" id="new-stu-name" required placeholder="e.g., Enkhjin Tsend" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Student ID *</label>
+                        <input type="text" id="new-stu-id" required placeholder="G10-019" class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Essay (30%)</label>
+                        <input type="number" id="new-stu-essay" min="0" max="100" value="88" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Quiz (20%)</label>
+                        <input type="number" id="new-stu-quiz" min="0" max="100" value="85" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Roleplay (25%)</label>
+                        <input type="number" id="new-stu-roleplay" min="0" max="100" value="92" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 mb-1">Grammar (25%)</label>
+                        <input type="number" id="new-stu-grammar" min="0" max="100" value="90" required class="w-full px-3 py-2 rounded-xl border border-slate-300 text-sm">
+                    </div>
+                    <div class="flex gap-2">
+                        <button type="submit" class="w-full py-2 px-3 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold cursor-pointer">Save</button>
+                        <button type="button" onclick="toggleAddStudentRow()" class="py-2 px-3 rounded-xl border border-slate-300 text-slate-600 text-sm hover:bg-slate-50 cursor-pointer">✕</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Interactive Gradebook Table -->
+            <div class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden">
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-xs font-semibold uppercase tracking-wider text-slate-500">
+                                <th class="py-3.5 px-4">Student Name</th>
+                                <th class="py-3.5 px-4">ID</th>
+                                <th class="py-3.5 px-4 text-center">Persuasive Essay (30%)</th>
+                                <th class="py-3.5 px-4 text-center">Reading Quiz (20%)</th>
+                                <th class="py-3.5 px-4 text-center">Restaurant Roleplay (25%)</th>
+                                <th class="py-3.5 px-4 text-center">Grammar Workshop (25%)</th>
+                                <th class="py-3.5 px-4 text-center">Total / %</th>
+                                <th class="py-3.5 px-4 text-center">Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody id="marks-table-body" class="divide-y divide-slate-100 text-sm">
+                            <!-- Populated dynamically via JS -->
+                        </tbody>
+                        <tfoot class="bg-slate-50/90 border-t border-slate-200 font-semibold text-sm text-slate-700">
+                            <tr>
+                                <td colspan="6" class="py-3 px-4 text-right text-xs uppercase tracking-wider text-slate-500">Class Overall Average:</td>
+                                <td id="class-overall-avg" class="py-3 px-4 text-center text-indigo-700 font-bold">0%</td>
+                                <td id="class-overall-grade" class="py-3 px-4 text-center font-bold">-</td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Student Assignment Submission Modal (Clean interactive demo) -->
+    <div id="submit-modal" class="fixed inset-0 z-50 hidden bg-slate-900/50 backdrop-blur-xs flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200">
+            <div class="flex items-center justify-between mb-3">
+                <h3 class="text-lg font-bold text-slate-900">Submit Assignment</h3>
+                <button onclick="closeSubmitModal()" class="text-slate-400 hover:text-slate-600 p-1 rounded-lg cursor-pointer">✕</button>
+            </div>
+            <p id="modal-assign-title" class="text-sm font-medium text-indigo-600 mb-4"></p>
+            <form onsubmit="handleStudentSubmission(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Your Name *</label>
+                    <input type="text" id="sub-student-name" required placeholder="Enter your full name" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold uppercase tracking-wider text-slate-600 mb-1">Document Link or Notes *</label>
+                    <textarea id="sub-student-note" rows="3" required placeholder="Paste Google Doc link or write your response..." class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+                </div>
+                <div class="flex justify-end gap-2 pt-2">
+                    <button type="button" onclick="closeSubmitModal()" class="px-4 py-2 rounded-xl border border-slate-300 text-slate-700 text-sm font-medium hover:bg-slate-50 cursor-pointer">Cancel</button>
+                    <button type="submit" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold shadow-sm cursor-pointer">Turn In Work</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200/80 py-5 mt-12">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
+            <p>10th Grade English • Teacher: B.Khongorzul • Period 2 (Mon/Wed/Fri)</p>
+            <p>Interactive Class Portal • Saved automatically in browser storage</p>
+        </div>
+    </footer>
+
+    <!-- Application Logic -->
+    <script>
+        // =====================================================================
+        // 1. DEFAULT DEMO DATA (10TH GRADE ENGLISH - B.KHONGORZUL)
+        // =====================================================================
+        const DEFAULT_ASSIGNMENTS = [
+            {
+                id: 1,
+                title: "Persuasive Essay Draft: Media & Society",
+                dueDate: "2026-11-27",
+                points: 40,
+                status: "Open",
+                summary: "Write a structured persuasive draft evaluating how social media shapes teen opinions and habits.",
+                instructions: "Draft a 500–650 word persuasive essay with a clear thesis statement, two supporting body paragraphs, one counterargument with rebuttal, and a concluding call to action. Submit your draft link or text before class on Friday.",
+                submittedCount: 16,
+                expanded: true
+            },
+            {
+                id: 2,
+                title: "Reading Comprehension & Vocabulary Quiz: Short Fiction",
+                dueDate: "2026-11-25",
+                points: 20,
+                status: "Open",
+                summary: "Analyze character motivation, plot conflict, and 15 target vocabulary words from this week's short story.",
+                instructions: "Review the highlighted vocabulary list and complete the short-answer inference questions on setting, tone, and theme. Focus on citing exact lines from the text to support your answers.",
+                submittedCount: 19,
+                expanded: false
+            },
+            {
+                id: 3,
+                title: "Speaking & Listening: Restaurant Roleplay / Eating Out",
+                dueDate: "2026-12-02",
+                points: 25,
+                status: "Upcoming",
+                summary: "Perform a paired dialogue ordering food, asking about ingredients, and handling a menu mix-up politely.",
+                instructions: "In pairs, prepare a 2–3 minute natural conversation set at a cafe or restaurant. Use polite requests ('Could you...', 'Would you mind...'), food/taste vocabulary, and clear pronunciation without reading word-for-word.",
+                submittedCount: 6,
+                expanded: false
+            },
+            {
+                id: 4,
+                title: "Grammar Workshop: Reported Speech & Clauses",
+                dueDate: "2026-11-16",
+                points: 15,
+                status: "Closed",
+                summary: "Practice tense shifts in reported speech and connect ideas smoothly using relative and conditional clauses.",
+                instructions: "Convert direct quotes from interviews into accurate reported speech and combine short sentences using who, which, where, and if-clauses. Answer keys and feedback were reviewed with B.Khongorzul in class.",
+                submittedCount: 24,
+                expanded: false
+            }
+        ];
+
+        const DEFAULT_ATTENDANCE = [
+            { id: "G10-001", name: "Anu Battulga", status: "Present", note: "Submitted vocabulary notes", timestamp: "08:53 AM" },
+            { id: "G10-004", name: "Temuulen Ganbold", status: "Present", note: "Ready for speaking pair work", timestamp: "08:56 AM" },
+            { id: "G10-007", name: "Nomin-Erdene Sukhbaatar", status: "Late", note: "Traffic delay on Peace Ave", timestamp: "09:08 AM" },
+            { id: "G10-011", name: "Dulguun Munkhbat", status: "Present", note: "On time", timestamp: "08:50 AM" },
+            { id: "G10-015", name: "Saruul Otgonbayar", status: "Excused", note: "School debate club rehearsal", timestamp: "08:40 AM" }
+        ];
+
+        const DEFAULT_STUDENTS = [
+            { id: "G10-001", name: "Anu Battulga", essay: 92, quiz: 95, roleplay: 94, grammar: 90 },
+            { id: "G10-004", name: "Temuulen Ganbold", essay: 84, quiz: 80, roleplay: 88, grammar: 86 },
+            { id: "G10-007", name: "Nomin-Erdene Sukhbaatar", essay: 89, quiz: 90, roleplay: 91, grammar: 87 },
+            { id: "G10-011", name: "Dulguun Munkhbat", essay: 78, quiz: 75, roleplay: 82, grammar: 80 },
+            { id: "G10-015", name: "Saruul Otgonbayar", essay: 95, quiz: 92, roleplay: 96, grammar: 94 },
+            { id: "G10-018", name: "Bilguun Purevdorj", essay: 74, quiz: 78, roleplay: 76, grammar: 72 }
+        ];
+
+        // =====================================================================
+        // 2. APPLICATION STATE & STORAGE
+        // =====================================================================
+        const STORAGE_KEY = 'classPortal10thEnglishKhongorzul_v1';
+
+        let state = {
+            viewMode: 'teacher',
+            assignments: [],
+            attendance: [],
+            students: [],
+            editMarksMode: true,
+            activeModalAssignmentId: null
+        };
+
+        function loadState() {
+            try {
+                const saved = localStorage.getItem(STORAGE_KEY);
+                if (saved) {
+                    const parsed = JSON.parse(saved);
+                    state.assignments = parsed.assignments || structuredClone(DEFAULT_ASSIGNMENTS);
+                    state.attendance = parsed.attendance || structuredClone(DEFAULT_ATTENDANCE);
+                    state.students = parsed.students || structuredClone(DEFAULT_STUDENTS);
+                } else {
+                    state.assignments = structuredClone(DEFAULT_ASSIGNMENTS);
+                    state.attendance = structuredClone(DEFAULT_ATTENDANCE);
+                    state.students = structuredClone(DEFAULT_STUDENTS);
+                }
+            } catch (err) {
+                state.assignments = structuredClone(DEFAULT_ASSIGNMENTS);
+                state.attendance = structuredClone(DEFAULT_ATTENDANCE);
+                state.students = structuredClone(DEFAULT_STUDENTS);
+            }
+        }
+
+        function saveState() {
+            try {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify({
+                    assignments: state.assignments,
+                    attendance: state.attendance,
+                    students: state.students
+                }));
+            } catch (err) {
+                // Ignore storage quota errors in restricted sandboxes
+            }
+        }
+
+        function resetDemoData() {
+            try {
+                localStorage.removeItem(STORAGE_KEY);
+            } catch (err) {
+                // Ignore storage errors
+            }
+            state.assignments = structuredClone(DEFAULT_ASSIGNMENTS);
+            state.attendance = structuredClone(DEFAULT_ATTENDANCE);
+            state.students = structuredClone(DEFAULT_STUDENTS);
+            renderAll();
+            showToast('Restored 10th Grade English sample data for B.Khongorzul.', 'info');
+        }
+
+        // =====================================================================
+        // 3. NAVIGATION TABS & TOAST NOTIFICATIONS
+        // =====================================================================
+        function switchTab(tabName) {
+            // Prevent switching to marks tab while in Student View
+            if (tabName === 'marks' && state.viewMode === 'student') {
+                tabName = 'assignments';
+            }
+
+            // Hide all panels
+            document.querySelectorAll('.tab-panel').forEach(panel => {
+                panel.classList.add('hidden');
+            });
+
+            // Reset all tab button styles
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'font-semibold', 'shadow-md', 'shadow-indigo-950/50');
+                btn.classList.add('text-slate-300', 'font-medium', 'hover:text-white', 'hover:bg-white/10');
+            });
+
+            // Show selected panel
+            const targetPanel = document.getElementById(`panel-${tabName}`);
+            if (targetPanel) targetPanel.classList.remove('hidden');
+
+            // Highlight active tab button
+            const activeBtn = document.getElementById(`tab-btn-${tabName}`);
+            if (activeBtn) {
+                activeBtn.classList.remove('text-slate-300', 'font-medium', 'hover:text-white', 'hover:bg-white/10');
+                activeBtn.classList.add('bg-indigo-600', 'text-white', 'font-semibold', 'shadow-md', 'shadow-indigo-950/50');
+            }
+        }
+
+        function setViewMode(mode) {
+            state.viewMode = mode === 'student' ? 'student' : 'teacher';
+            const isStudent = state.viewMode === 'student';
+
+            const teacherBtn = document.getElementById('view-btn-teacher');
+            const studentBtn = document.getElementById('view-btn-student');
+            const activeLabel = document.getElementById('active-view-label');
+            const activeDesc = document.getElementById('active-view-desc');
+            const activeDot = document.getElementById('active-view-dot');
+
+            if (isStudent) {
+                studentBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-sky-400 text-slate-950 shadow-xs';
+                teacherBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer text-slate-200 hover:text-white';
+                activeLabel.textContent = 'Student View';
+                activeDesc.textContent = 'Showing Assignments & Attendance Check-In only (Student Marks hidden).';
+                activeDot.className = 'w-2 h-2 rounded-full bg-sky-400';
+            } else {
+                teacherBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-semibold transition cursor-pointer bg-emerald-500 text-slate-950 shadow-xs';
+                studentBtn.className = 'px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer text-slate-200 hover:text-white';
+                activeLabel.textContent = 'Teacher View';
+                activeDesc.textContent = 'Full access to Assignments, Attendance Check-In & Student Marks.';
+                activeDot.className = 'w-2 h-2 rounded-full bg-emerald-400';
+            }
+
+            // Hide or show Student Marks tab and marks panel
+            const marksTabBtn = document.getElementById('tab-btn-marks');
+            const marksPanel = document.getElementById('panel-marks');
+            if (isStudent) {
+                marksTabBtn.classList.add('hidden');
+                marksPanel.classList.add('hidden');
+                if (!marksPanel.classList.contains('hidden') || document.getElementById('panel-assignments').classList.contains('hidden') && document.getElementById('panel-attendance').classList.contains('hidden')) {
+                    switchTab('assignments');
+                }
+                // If user was viewing Marks, switch to Assignments
+                const isMarksActive = !marksTabBtn.classList.contains('bg-indigo-600') && document.getElementById('panel-assignments').classList.contains('hidden') && document.getElementById('panel-attendance').classList.contains('hidden');
+                if (isMarksActive) {
+                    switchTab('assignments');
+                }
+            } else {
+                marksTabBtn.classList.remove('hidden');
+            }
+
+            // Hide or show teacher-only controls in header, assignments, and attendance
+            document.getElementById('header-avg-pill').classList.toggle('hidden', isStudent);
+            document.getElementById('btn-reset-demo').classList.toggle('hidden', isStudent);
+            document.getElementById('btn-add-assignment').classList.toggle('hidden', isStudent);
+            document.getElementById('attendance-right-column').classList.toggle('hidden', isStudent);
+
+            if (isStudent) {
+                document.getElementById('new-assignment-drawer').classList.add('hidden');
+                document.getElementById('assignments-subtitle').textContent = 'View instructions, due dates, and turn in your 10th Grade English work.';
+                // Ensure user isn't stuck on hidden Marks tab
+                const currentVisible = ['assignments', 'attendance'].find(t => !document.getElementById(`panel-${t}`).classList.contains('hidden'));
+                if (!currentVisible) {
+                    switchTab('assignments');
+                }
+            } else {
+                document.getElementById('assignments-subtitle').textContent = 'Reading, writing, speaking & grammar tasks led by B.Khongorzul.';
+            }
+
+            renderAssignments();
+            showToast(isStudent ? 'Switched to Student View.' : 'Switched to Teacher View.');
+        }
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            const bgColors = {
+                success: 'bg-emerald-600 text-white',
+                info: 'bg-slate-800 text-white',
+                warning: 'bg-amber-600 text-white'
+            };
+
+            toast.className = `${bgColors[type] || bgColors.info} px-4 py-3 rounded-xl shadow-lg text-sm font-medium flex items-center gap-2.5 pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0`;
+            toast.innerHTML = `
+                <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                <span>${escapeHTML(message)}</span>
+            `;
+
+            container.appendChild(toast);
+            requestAnimationFrame(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            });
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function escapeHTML(str) {
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;');
+        }
+
+        // =====================================================================
+        // 4. TAB 1: ASSIGNMENTS LOGIC
+        // =====================================================================
+        function toggleNewAssignmentForm() {
+            if (state.viewMode === 'student') return;
+            const drawer = document.getElementById('new-assignment-drawer');
+            drawer.classList.toggle('hidden');
+        }
+
+        function handleAddAssignment(event) {
+            event.preventDefault();
+            const title = document.getElementById('assign-title').value.trim();
+            const dueDate = document.getElementById('assign-due').value;
+            const points = Math.max(1, parseInt(document.getElementById('assign-points').value, 10) || 25);
+            const status = document.getElementById('assign-status').value;
+            const summary = document.getElementById('assign-summary').value.trim();
+            const instructions = document.getElementById('assign-instructions').value.trim();
+
+            if (!title || !dueDate) return;
+
+            const newAssign = {
+                id: Date.now(),
+                title,
+                dueDate,
+                points,
+                status,
+                summary,
+                instructions,
+                submittedCount: 0,
+                expanded: true
+            };
+
+            state.assignments.unshift(newAssign);
+            saveState();
+            renderAssignments();
+
+            event.target.reset();
+            document.getElementById('assign-points').value = '25';
+            toggleNewAssignmentForm();
+            showToast('New 10th Grade assignment published!');
+        }
+
+        function toggleAssignmentDetails(id) {
+            const item = state.assignments.find(a => a.id === id);
+            if (item) {
+                item.expanded = !item.expanded;
+                renderAssignments();
+            }
+        }
+
+        function openSubmitModal(id) {
+            const item = state.assignments.find(a => a.id === id);
+            if (!item) return;
+            state.activeModalAssignmentId = id;
+            document.getElementById('modal-assign-title').textContent = item.title;
+            document.getElementById('submit-modal').classList.remove('hidden');
+        }
+
+        function closeSubmitModal() {
+            document.getElementById('submit-modal').classList.add('hidden');
+            state.activeModalAssignmentId = null;
+        }
+
+        function handleStudentSubmission(event) {
+            event.preventDefault();
+            const studentName = document.getElementById('sub-student-name').value.trim();
+            const item = state.assignments.find(a => a.id === state.activeModalAssignmentId);
+            if (item) {
+                item.submittedCount += 1;
+                saveState();
+                renderAssignments();
+            }
+            event.target.reset();
+            closeSubmitModal();
+            showToast(`Work submitted for ${studentName}!`);
+        }
+
+        function renderAssignments() {
+            const container = document.getElementById('assignments-list');
+            document.getElementById('badge-assignments-count').textContent = state.assignments.length;
+
+            const statusBadgeStyles = {
+                'Open': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                'Upcoming': 'bg-indigo-50 text-indigo-700 border-indigo-200',
+                'Closed': 'bg-slate-100 text-slate-600 border-slate-200'
+            };
+
+            container.innerHTML = state.assignments.map(assign => {
+                const badgeClass = statusBadgeStyles[assign.status] || statusBadgeStyles['Open'];
+                const formattedDate = new Date(assign.dueDate + 'T00:00:00').toLocaleDateString('en-US', {
+                    month: 'short', day: 'numeric', year: 'numeric'
+                });
+
+                return `
+                    <article class="bg-white rounded-2xl border border-slate-200/80 shadow-sm overflow-hidden transition hover:border-indigo-200">
+                        <div class="p-5 sm:p-6">
+                            <div class="flex flex-col sm:flex-row sm:items-start justify-between gap-3">
+                                <div class="space-y-1">
+                                    <div class="flex flex-wrap items-center gap-2.5">
+                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold border ${badgeClass}">
+                                            ${escapeHTML(assign.status)}
+                                        </span>
+                                        <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-slate-100 text-slate-700 border border-slate-200">
+                                            ${escapeHTML(assign.points)} pts
+                                        </span>
+                                        <span class="text-xs font-medium text-slate-500">
+                                            Due: <strong class="text-slate-700">${formattedDate}</strong>
+                                        </span>
+                                        <span class="text-xs text-slate-400">• ${assign.submittedCount} turned in</span>
+                                    </div>
+                                    <h3 class="text-base sm:text-lg font-bold text-slate-900 pt-1">
+                                        ${escapeHTML(assign.title)}
+                                    </h3>
+                                    <p class="text-sm text-slate-600">${escapeHTML(assign.summary)}</p>
+                                </div>
+
+                                <div class="flex items-center gap-2 shrink-0 pt-1">
+                                    <button onclick="toggleAssignmentDetails(${assign.id})" class="px-3.5 py-2 rounded-xl border border-slate-200 hover:bg-slate-50 text-slate-700 text-xs font-semibold transition cursor-pointer">
+                                        ${assign.expanded ? 'Hide Details' : 'View Instructions'}
+                                    </button>
+                                    ${assign.status !== 'Closed' ? `
+                                        <button onclick="openSubmitModal(${assign.id})" class="px-3.5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold shadow-sm transition cursor-pointer">
+                                            ${state.viewMode === 'student' ? 'Turn In Assignment' : 'Submit Work'}
+                                        </button>
+                                    ` : ''}
+                                </div>
+                            </div>
+
+                            ${assign.expanded ? `
+                                <div class="mt-4 pt-4 border-t border-slate-100 bg-slate-50/70 -mx-5 sm:-mx-6 -mb-5 sm:-mb-6 px-5 sm:px-6 py-4">
+                                    <h4 class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-1.5">Instructions & Requirements</h4>
+                                    <p class="text-sm text-slate-700 leading-relaxed">${escapeHTML(assign.instructions)}</p>
+                                </div>
+                            ` : ''}
+                        </div>
+                    </article>
+                `;
+            }).join('');
+        }
+
+        // =====================================================================
+        // 5. TAB 2: ATTENDANCE CHECK-IN LOGIC
+        // =====================================================================
+        function handleCheckIn(event) {
+            event.preventDefault();
+            const nameInput = document.getElementById('checkin-name');
+            const idInput = document.getElementById('checkin-id');
+            const statusInput = document.getElementById('checkin-status');
+            const noteInput = document.getElementById('checkin-note');
+
+            const name = nameInput.value.trim();
+            const id = idInput.value.trim().toUpperCase();
+            const status = statusInput.value;
+            const note = noteInput.value.trim() || '—';
+
+            if (!name || !id) return;
+
+            const now = new Date();
+            const timestamp = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+            // Add new entry to the top of the log
+            state.attendance.unshift({ id, name, status, note, timestamp });
+            saveState();
+            renderAttendance();
+
+            nameInput.value = '';
+            idInput.value = '';
+            statusInput.value = 'Present';
+            noteInput.value = '';
+            showToast(`${name} checked in as ${status}.`);
+        }
+
+        function copyAttendanceLog() {
+            const header = "Student Name\tStudent ID\tStatus\tNote\tTime";
+            const rows = state.attendance.map(r => `${r.name}\t${r.id}\t${r.status}\t${r.note || '—'}\t${r.timestamp}`);
+            const text = [header, ...rows].join('\n');
+
+            // Use fallback textarea + execCommand('copy') for reliable clipboard support
+            const tempTextarea = document.createElement('textarea');
+            tempTextarea.value = text;
+            document.body.appendChild(tempTextarea);
+            tempTextarea.select();
+            try {
+                document.execCommand('copy');
+                showToast('Attendance log copied to clipboard (ready for Excel/Sheets)!');
+            } catch (err) {
+                showToast('Unable to copy log automatically.', 'warning');
+            }
+            document.body.removeChild(tempTextarea);
+        }
+
+        function renderAttendance() {
+            const tbody = document.getElementById('attendance-table-body');
+            const badgeCount = document.getElementById('badge-attendance-count');
+
+            const presentCount = state.attendance.filter(a => a.status === 'Present').length;
+            const lateCount = state.attendance.filter(a => a.status === 'Late').length;
+            const totalCount = state.attendance.length;
+
+            document.getElementById('stat-present').textContent = presentCount;
+            document.getElementById('stat-late').textContent = lateCount;
+            document.getElementById('stat-total').textContent = totalCount;
+            badgeCount.textContent = totalCount;
+
+            const statusPill = {
+                'Present': 'bg-emerald-50 text-emerald-700 border-emerald-200',
+                'Late': 'bg-amber-50 text-amber-700 border-amber-200',
+                'Excused': 'bg-slate-100 text-slate-600 border-slate-200'
+            };
+
+            tbody.innerHTML = state.attendance.map(entry => `
+                <tr class="hover:bg-slate-50/80 transition">
+                    <td class="py-3 px-4 font-semibold text-slate-800">${escapeHTML(entry.name)}</td>
+                    <td class="py-3 px-4 font-mono text-xs text-slate-500">${escapeHTML(entry.id)}</td>
+                    <td class="py-3 px-4">
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold border ${statusPill[entry.status] || statusPill['Present']}">
+                            ${escapeHTML(entry.status)}
+                        </span>
+                    </td>
+                    <td class="py-3 px-4 text-xs text-slate-600 max-w-xs truncate" title="${escapeHTML(entry.note || '—')}">${escapeHTML(entry.note || '—')}</td>
+                    <td class="py-3 px-4 text-xs text-slate-500 whitespace-nowrap">${escapeHTML(entry.timestamp)}</td>
+                </tr>
+            `).join('');
+        }
+
+        // =====================================================================
+        // 6. TAB 3: STUDENT MARKS / GRADEBOOK LOGIC
+        // =====================================================================
+        function calculateWeightedAverage(stu) {
+            // Weights: Persuasive Essay (30%), Reading Quiz (20%), Restaurant Roleplay (25%), Grammar Workshop (25%)
+            const avg = (stu.essay * 0.30) + (stu.quiz * 0.20) + (stu.roleplay * 0.25) + (stu.grammar * 0.25);
+            return Math.round(avg * 10) / 10;
+        }
+
+        function getLetterGrade(avg) {
+            if (avg >= 90) return { letter: 'A', color: 'text-emerald-700 bg-emerald-50 border-emerald-200' };
+            if (avg >= 80) return { letter: 'B', color: 'text-indigo-700 bg-indigo-50 border-indigo-200' };
+            if (avg >= 70) return { letter: 'C', color: 'text-amber-700 bg-amber-50 border-amber-200' };
+            if (avg >= 60) return { letter: 'D', color: 'text-orange-700 bg-orange-50 border-orange-200' };
+            return { letter: 'F', color: 'text-rose-700 bg-rose-50 border-rose-200' };
+        }
+
+        function toggleEditMarks() {
+            state.editMarksMode = !state.editMarksMode;
+            const label = document.getElementById('edit-mode-label');
+            const btn = document.getElementById('btn-toggle-edit');
+            if (state.editMarksMode) {
+                label.textContent = 'Edit Marks: ON';
+                btn.classList.add('bg-indigo-50', 'text-indigo-700', 'border-indigo-200');
+                btn.classList.remove('bg-slate-100', 'text-slate-600', 'border-slate-200');
+            } else {
+                label.textContent = 'Edit Marks: OFF';
+                btn.classList.remove('bg-indigo-50', 'text-indigo-700', 'border-indigo-200');
+                btn.classList.add('bg-slate-100', 'text-slate-600', 'border-slate-200');
+            }
+            renderMarksTable();
+        }
+
+        function toggleAddStudentRow() {
+            document.getElementById('add-student-drawer').classList.toggle('hidden');
+        }
+
+        function handleAddStudent(event) {
+            event.preventDefault();
+            const name = document.getElementById('new-stu-name').value.trim();
+            const id = document.getElementById('new-stu-id').value.trim().toUpperCase();
+            const essay = clampScore(document.getElementById('new-stu-essay').value);
+            const quiz = clampScore(document.getElementById('new-stu-quiz').value);
+            const roleplay = clampScore(document.getElementById('new-stu-roleplay').value);
+            const grammar = clampScore(document.getElementById('new-stu-grammar').value);
+
+            if (!name || !id) return;
+
+            state.students.push({ id, name, essay, quiz, roleplay, grammar });
+            saveState();
+            renderMarksTable();
+
+            event.target.reset();
+            toggleAddStudentRow();
+            showToast(`${name} added to 10th Grade gradebook.`);
+        }
+
+        function clampScore(val) {
+            const num = parseFloat(val);
+            if (isNaN(num)) return 0;
+            return Math.min(100, Math.max(0, num));
+        }
+
+        function updateStudentMark(index, field, value) {
+            const clamped = clampScore(value);
+            state.students[index][field] = clamped;
+            saveState();
+            renderMarksTable();
+        }
+
+        function renderMarksTable() {
+            const tbody = document.getElementById('marks-table-body');
+            const query = document.getElementById('marks-search').value.trim().toLowerCase();
+
+            const filtered = state.students
+                .map((stu, originalIndex) => ({ ...stu, originalIndex }))
+                .filter(stu => stu.name.toLowerCase().includes(query) || stu.id.toLowerCase().includes(query));
+
+            let sumAverages = 0;
+
+            tbody.innerHTML = filtered.map(stu => {
+                const avg = calculateWeightedAverage(stu);
+                sumAverages += avg;
+                const gradeObj = getLetterGrade(avg);
+
+                const renderCell = (field, val) => {
+                    if (state.editMarksMode) {
+                        return `
+                            <input type="number" min="0" max="100" value="${val}"
+                                onchange="updateStudentMark(${stu.originalIndex}, '${field}', this.value)"
+                                class="w-16 text-center py-1 px-1.5 rounded-lg border border-slate-200 bg-slate-50/60 focus:bg-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 focus:outline-none font-medium text-slate-800 transition">
+                        `;
+                    }
+                    return `<span class="font-medium text-slate-700">${val}%</span>`;
+                };
+
+                return `
+                    <tr class="hover:bg-slate-50/70 transition">
+                        <td class="py-3.5 px-4 font-semibold text-slate-900">${escapeHTML(stu.name)}</td>
+                        <td class="py-3.5 px-4 font-mono text-xs text-slate-500">${escapeHTML(stu.id)}</td>
+                        <td class="py-3.5 px-4 text-center">${renderCell('essay', stu.essay)}</td>
+                        <td class="py-3.5 px-4 text-center">${renderCell('quiz', stu.quiz)}</td>
+                        <td class="py-3.5 px-4 text-center">${renderCell('roleplay', stu.roleplay)}</td>
+                        <td class="py-3.5 px-4 text-center">${renderCell('grammar', stu.grammar)}</td>
+                        <td class="py-3.5 px-4 text-center font-bold text-slate-900">${avg.toFixed(1)}%</td>
+                        <td class="py-3.5 px-4 text-center">
+                            <span class="inline-flex items-center justify-center w-8 h-7 rounded-lg text-xs font-bold border ${gradeObj.color}">
+                                ${gradeObj.letter}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Update class footer average and header quick stat
+            const overallAvg = filtered.length ? (sumAverages / filtered.length) : 0;
+            const overallGrade = getLetterGrade(overallAvg);
+            document.getElementById('class-overall-avg').textContent = `${overallAvg.toFixed(1)}%`;
+            document.getElementById('class-overall-grade').textContent = filtered.length ? overallGrade.letter : '-';
+            document.getElementById('header-roster-count').textContent = state.students.length;
+            document.getElementById('header-class-avg').textContent = `${overallAvg.toFixed(1)}%`;
+        }
+
+        // =====================================================================
+        // 7. INITIALIZATION
+        // =====================================================================
+        function renderAll() {
+            const todayStr = new Date().toLocaleDateString('en-US', {
+                weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+            });
+            document.getElementById('current-date-label').textContent = todayStr;
+
+            renderAssignments();
+            renderAttendance();
+            renderMarksTable();
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            loadState();
+            renderAll();
+        });
+    </script>
+</body>
+</html>
